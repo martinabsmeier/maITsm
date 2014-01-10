@@ -1,0 +1,8 @@
+# Files
+*.class
+*.jar
+*.war
+*.ear
+
+# Directories
+/target
