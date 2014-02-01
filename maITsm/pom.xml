@@ -52,8 +52,8 @@
 		<junit.version>4.10</junit.version>
 
 		<!-- compile -->
-		<source.version>1.6</source.version>
-		<target.version>1.6</target.version>
+		<source.version>1.7</source.version>
+		<target.version>1.7</target.version>
 
 		<!-- plugib -->
 		<compiler.version>3.1</compiler.version>
