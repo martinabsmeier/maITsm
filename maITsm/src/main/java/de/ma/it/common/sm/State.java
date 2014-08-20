@@ -48,13 +48,13 @@ public class State {
 
     private final State parent;
 
-    private List<TransitionHolder> transitionHolders = new ArrayList<TransitionHolder>();
+    private final List<TransitionHolder> transitionHolders = new ArrayList<TransitionHolder>();
 
     private List<Transition> transitions = Collections.emptyList();
 
-    private List<SelfTransition> onEntries = new ArrayList<SelfTransition>();
+    private final List<SelfTransition> onEntries = new ArrayList<SelfTransition>();
 
-    private List<SelfTransition> onExits = new ArrayList<SelfTransition>();
+    private final List<SelfTransition> onExits = new ArrayList<SelfTransition>();
 
     /**
      * Creates a new {@link State} with the specified id.
