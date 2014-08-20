@@ -30,8 +30,8 @@ public interface SelfTransition {
     /**
      * Executes this {@link SelfTransition}.
      *
-     * @param stateContext
-     * @param state
+     * @param stateContext The context of the state.
+     * @param state The state.
      * @return <code>true</code> if the {@link SelfTransition} was executed, <code>false</code> otherwise.
      */
     boolean execute(StateContext stateContext, State state);

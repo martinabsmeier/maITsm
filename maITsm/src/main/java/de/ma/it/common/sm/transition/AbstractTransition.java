@@ -26,22 +26,21 @@ import de.ma.it.common.sm.StateMachine;
 import de.ma.it.common.sm.event.Event;
 
 /**
- * Abstract {@link Transition} implementation. Takes care of matching the
- * current {@link Event}'s id against the id of the {@link Event} this 
- * {@link Transition} handles. To handle any {@link Event} the id should be set
- * to {@link Event#WILDCARD_EVENT_ID}.
+ * Abstract {@link Transition} implementation. Takes care of matching the current {@link Event}'s id against the id of
+ * the {@link Event} this {@link Transition} handles. To handle any {@link Event} the id should be set to
+ * {@link Event#WILDCARD_EVENT_ID}.
  *
  * @author Martin Absmeier
  */
 public abstract class AbstractTransition implements Transition {
+
     private final Object eventId;
 
     private final State nextState;
 
     /**
-     * Creates a new instance which will loopback to the same {@link State} 
-     * for the specified {@link Event} id.
-     * 
+     * Creates a new instance which will loopback to the same {@link State} for the specified {@link Event} id.
+     *
      * @param eventId the {@link Event} id.
      */
     public AbstractTransition(Object eventId) {
@@ -49,9 +48,8 @@ public abstract class AbstractTransition implements Transition {
     }
 
     /**
-     * Creates a new instance with the specified {@link State} as next state 
-     * and for the specified {@link Event} id.
-     * 
+     * Creates a new instance with the specified {@link State} as next state and for the specified {@link Event} id.
+     *
      * @param eventId the {@link Event} id.
      * @param nextState the next {@link State}.
      */
@@ -75,14 +73,12 @@ public abstract class AbstractTransition implements Transition {
     }
 
     /**
-     * Executes this {@link Transition}. This method doesn't have to check
-     * if the {@link Event}'s id matches because {@link #execute(Event)} has
-     * already made sure that that is the case.
-     * 
+     * Executes this {@link Transition}. This method doesn't have to check if the {@link Event}'s id matches because
+     * {@link #execute(Event)} has already made sure that that is the case.
+     *
      * @param event the current {@link Event}.
-     * @return <code>true</code> if the {@link Transition} has been executed 
-     *         successfully and the {@link StateMachine} should move to the 
-     *         next {@link State}. <code>false</code> otherwise.
+     * @return <code>true</code> if the {@link Transition} has been executed successfully and the {@link StateMachine}
+     * should move to the next {@link State}. <code>false</code> otherwise.
      */
     protected abstract boolean doExecute(Event event);
 

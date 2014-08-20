@@ -154,6 +154,7 @@ public class StateMachineProxyBuilder {
 	/**
 	 * Creates a proxy for the specified interface and which uses the specified {@link StateMachine}.
 	 * 
+     * @param <T>
 	 * @param iface
 	 *            the interface the proxy will implement.
 	 * @param sm
@@ -211,12 +212,13 @@ public class StateMachineProxyBuilder {
 			this.name = name;
 		}
 
+        @Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			if ("hashCode".equals(method.getName()) && args == null) {
-				return new Integer(System.identityHashCode(proxy));
+				return System.identityHashCode(proxy);
 			}
 			if ("equals".equals(method.getName()) && args.length == 1) {
-				return Boolean.valueOf(proxy == args[0]);
+				return proxy == args[0];
 			}
 			if ("toString".equals(method.getName()) && args == null) {
 				return (name != null ? name : proxy.getClass().getName()) + "@" + Integer.toHexString(System.identityHashCode(proxy));

@@ -49,6 +49,12 @@ public class NoopTransition extends AbstractTransition {
         super(eventId, nextState);
     }
 
+    /**
+     * 
+     * @param event
+     * @return 
+     */
+    @Override
     protected boolean doExecute(Event event) {
         return true;
     }

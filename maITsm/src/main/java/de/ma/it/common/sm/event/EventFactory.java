@@ -23,25 +23,20 @@ import de.ma.it.common.sm.StateMachineProxyBuilder;
 import de.ma.it.common.sm.context.StateContext;
 
 /**
- * Used by {@link StateMachineProxyBuilder} to create {@link Event} objects when methods are invoked
- * on the proxy.
- * 
+ * Used by {@link StateMachineProxyBuilder} to create {@link Event} objects when methods are invoked on the proxy.
+ *
  * @author Martin Absmeier
  */
 public interface EventFactory {
 
-	/**
-	 * Creates a new {@link Event} from the specified method and method arguments.
-	 * 
-	 * @param context
-	 *            the current {@link StateContext}.
-	 * @param method
-	 *            the method being invoked.
-     * @param arguments
-	 * @param args
-	 *            the method arguments.
-	 * @return the {@link Event} object.
-	 */
-	Event create(StateContext context, Method method, Object[] arguments);
+    /**
+     * Creates a new {@link Event} from the specified method and method arguments.
+     *
+     * @param context the current {@link StateContext}.
+     * @param method the method being invoked.
+     * @param arguments the method arguments.
+     * @return the {@link Event} object.
+     */
+    Event create(StateContext context, Method method, Object[] arguments);
 
 }

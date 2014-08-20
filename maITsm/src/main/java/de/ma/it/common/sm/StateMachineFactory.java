@@ -40,364 +40,362 @@ import de.ma.it.common.sm.exception.StateMachineCreationException;
 import de.ma.it.common.sm.transition.MethodSelfTransition;
 import de.ma.it.common.sm.transition.MethodTransition;
 import de.ma.it.common.sm.transition.SelfTransition;
+import java.lang.reflect.InvocationTargetException;
 
 /**
- * Creates {@link StateMachine}s by reading {@link de.ma.it.common.sm.annotation.State}, {@link Transition} and {@link Transitions} (or
- * equivalent) and {@link SelfTransition} annotations from one or more arbitrary objects.
- * 
+ * Creates {@link StateMachine}s by reading {@link de.ma.it.common.sm.annotation.State}, {@link Transition} and
+ * {@link Transitions} (or equivalent) and {@link SelfTransition} annotations from one or more arbitrary objects.
+ *
  * @author Martin Absmeier
  */
 public class StateMachineFactory {
-	private final Class<? extends Annotation> transitionAnnotation;
 
-	private final Class<? extends Annotation> transitionsAnnotation;
+    private final Class<? extends Annotation> transitionAnnotation;
 
-	private final Class<? extends Annotation> entrySelfTransitionsAnnotation;
+    private final Class<? extends Annotation> transitionsAnnotation;
 
-	private final Class<? extends Annotation> exitSelfTransitionsAnnotation;
+    private final Class<? extends Annotation> entrySelfTransitionsAnnotation;
 
-	protected StateMachineFactory(Class<? extends Annotation> transitionAnnotation, Class<? extends Annotation> transitionsAnnotation,
-			Class<? extends Annotation> entrySelfTransitionsAnnotation, Class<? extends Annotation> exitSelfTransitionsAnnotation) {
-		this.transitionAnnotation = transitionAnnotation;
-		this.transitionsAnnotation = transitionsAnnotation;
-		this.entrySelfTransitionsAnnotation = entrySelfTransitionsAnnotation;
-		this.exitSelfTransitionsAnnotation = exitSelfTransitionsAnnotation;
-	}
+    private final Class<? extends Annotation> exitSelfTransitionsAnnotation;
 
-	/**
-	 * Returns a new {@link StateMachineFactory} instance which creates {@link StateMachine}s by reading the specified {@link Transition}
-	 * equivalent annotation.
-	 * 
-	 * @param transitionAnnotation
-	 *            the {@link Transition} equivalent annotation.
-	 * @return the {@link StateMachineFactory}.
-	 */
-	public static StateMachineFactory getInstance(Class<? extends Annotation> transitionAnnotation) {
-		TransitionAnnotation a = transitionAnnotation.getAnnotation(TransitionAnnotation.class);
-		if (a == null) {
-			throw new IllegalArgumentException("The annotation class " + transitionAnnotation + " has not been annotated with the "
-					+ TransitionAnnotation.class.getName() + " annotation");
-		}
+    protected StateMachineFactory(Class<? extends Annotation> transitionAnnotation, Class<? extends Annotation> transitionsAnnotation,
+            Class<? extends Annotation> entrySelfTransitionsAnnotation, Class<? extends Annotation> exitSelfTransitionsAnnotation) {
+        this.transitionAnnotation = transitionAnnotation;
+        this.transitionsAnnotation = transitionsAnnotation;
+        this.entrySelfTransitionsAnnotation = entrySelfTransitionsAnnotation;
+        this.exitSelfTransitionsAnnotation = exitSelfTransitionsAnnotation;
+    }
 
-		return new StateMachineFactory(transitionAnnotation, a.value(), OnEntry.class, OnExit.class);
-	}
+    /**
+     * Returns a new {@link StateMachineFactory} instance which creates {@link StateMachine}s by reading the specified
+     * {@link Transition} equivalent annotation.
+     *
+     * @param transitionAnnotation the {@link Transition} equivalent annotation.
+     * @return the {@link StateMachineFactory}.
+     */
+    public static StateMachineFactory getInstance(Class<? extends Annotation> transitionAnnotation) {
+        TransitionAnnotation a = transitionAnnotation.getAnnotation(TransitionAnnotation.class);
+        if (a == null) {
+            throw new IllegalArgumentException("The annotation class " + transitionAnnotation + " has not been annotated with the "
+                    + TransitionAnnotation.class.getName() + " annotation");
+        }
 
-	/**
-	 * Creates a new {@link StateMachine} from the specified handler object and using a start state with id <code>start</code>.
-	 * 
-	 * @param handler
-	 *            the object containing the annotations describing the state machine.
-	 * @return the {@link StateMachine} object.
-	 */
-	public StateMachine create(Object handler) {
-		return create(handler, new Object[0]);
-	}
+        return new StateMachineFactory(transitionAnnotation, a.value(), OnEntry.class, OnExit.class);
+    }
 
-	/**
-	 * Creates a new {@link StateMachine} from the specified handler object and using the {@link State} with the specified id as start
-	 * state.
-	 * 
-	 * @param start
-	 *            the id of the start {@link State} to use.
-	 * @param handler
-	 *            the object containing the annotations describing the state machine.
-	 * @return the {@link StateMachine} object.
-	 */
-	public StateMachine create(String start, Object handler) {
-		return create(start, handler, new Object[0]);
-	}
+    /**
+     * Creates a new {@link StateMachine} from the specified handler object and using a start state with id
+     * <code>start</code>.
+     *
+     * @param handler the object containing the annotations describing the state machine.
+     * @return the {@link StateMachine} object.
+     */
+    public StateMachine create(Object handler) {
+        return create(handler, new Object[0]);
+    }
 
-	/**
-	 * Creates a new {@link StateMachine} from the specified handler objects and using a start state with id <code>start</code>.
-	 * 
-	 * @param handler
-	 *            the first object containing the annotations describing the state machine.
-	 * @param handlers
-	 *            zero or more additional objects containing the annotations describing the state machine.
-	 * @return the {@link StateMachine} object.
-	 */
-	public StateMachine create(Object handler, Object... handlers) {
-		return create("start", handler, handlers);
-	}
+    /**
+     * Creates a new {@link StateMachine} from the specified handler object and using the {@link State} with the
+     * specified id as start state.
+     *
+     * @param start the id of the start {@link State} to use.
+     * @param handler the object containing the annotations describing the state machine.
+     * @return the {@link StateMachine} object.
+     */
+    public StateMachine create(String start, Object handler) {
+        return create(start, handler, new Object[0]);
+    }
 
-	/**
-	 * Creates a new {@link StateMachine} from the specified handler objects and using the {@link State} with the specified id as start
-	 * state.
-	 * 
-	 * @param start
-	 *            the id of the start {@link State} to use.
-	 * @param handler
-	 *            the first object containing the annotations describing the state machine.
-	 * @param handlers
-	 *            zero or more additional objects containing the annotations describing the state machine.
-	 * @return the {@link StateMachine} object.
-	 */
-	public StateMachine create(String start, Object handler, Object... handlers) {
+    /**
+     * Creates a new {@link StateMachine} from the specified handler objects and using a start state with id
+     * <code>start</code>.
+     *
+     * @param handler the first object containing the annotations describing the state machine.
+     * @param handlers zero or more additional objects containing the annotations describing the state machine.
+     * @return the {@link StateMachine} object.
+     */
+    public StateMachine create(Object handler, Object... handlers) {
+        return create("start", handler, handlers);
+    }
 
-		Map<String, State> states = new HashMap<String, State>();
-		List<Object> handlersList = new ArrayList<Object>(1 + handlers.length);
-		handlersList.add(handler);
-		handlersList.addAll(Arrays.asList(handlers));
+    /**
+     * Creates a new {@link StateMachine} from the specified handler objects and using the {@link State} with the
+     * specified id as start state.
+     *
+     * @param start the id of the start {@link State} to use.
+     * @param handler the first object containing the annotations describing the state machine.
+     * @param handlers zero or more additional objects containing the annotations describing the state machine.
+     * @return the {@link StateMachine} object.
+     */
+    public StateMachine create(String start, Object handler, Object... handlers) {
 
-		LinkedList<Field> fields = new LinkedList<Field>();
-		for (Object h : handlersList) {
-			fields.addAll(getFields(h instanceof Class ? (Class<?>) h : h.getClass()));
-		}
-		for (State state : createStates(fields)) {
-			states.put(state.getId(), state);
-		}
+        Map<String, State> states = new HashMap<String, State>();
+        List<Object> handlersList = new ArrayList<Object>(1 + handlers.length);
+        handlersList.add(handler);
+        handlersList.addAll(Arrays.asList(handlers));
 
-		if (!states.containsKey(start)) {
-			throw new StateMachineCreationException("Start state '" + start + "' not found.");
-		}
+        LinkedList<Field> fields = new LinkedList<Field>();
+        for (Object h : handlersList) {
+            fields.addAll(getFields(h instanceof Class ? (Class<?>) h : h.getClass()));
+        }
+        for (State state : createStates(fields)) {
+            states.put(state.getId(), state);
+        }
 
-		setupTransitions(transitionAnnotation, transitionsAnnotation, entrySelfTransitionsAnnotation, exitSelfTransitionsAnnotation,
-				states, handlersList);
+        if (!states.containsKey(start)) {
+            throw new StateMachineCreationException("Start state '" + start + "' not found.");
+        }
 
-		return new StateMachine(states.values(), start);
-	}
+        setupTransitions(transitionAnnotation, transitionsAnnotation, entrySelfTransitionsAnnotation, exitSelfTransitionsAnnotation,
+                         states, handlersList);
 
-	private static void setupTransitions(Class<? extends Annotation> transitionAnnotation,
-			Class<? extends Annotation> transitionsAnnotation, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
-			Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, List<Object> handlers) {
-		for (Object handler : handlers) {
-			setupTransitions(transitionAnnotation, transitionsAnnotation, onEntrySelfTransitionAnnotation, onExitSelfTransitionAnnotation,
-					states, handler);
-		}
-	}
+        return new StateMachine(states.values(), start);
+    }
 
-	private static void setupSelfTransitions(Method m, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
-			Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, Object handler) {
-		if (m.isAnnotationPresent(OnEntry.class)) {
-			OnEntry onEntryAnnotation = (OnEntry) m.getAnnotation(onEntrySelfTransitionAnnotation);
-			State state = states.get(onEntryAnnotation.value());
-			if (state == null) {
-				throw new StateMachineCreationException("Error encountered " + "when processing onEntry annotation in method " + m
-						+ ". state " + onEntryAnnotation.value() + " not Found.");
+    private static void setupTransitions(Class<? extends Annotation> transitionAnnotation,
+            Class<? extends Annotation> transitionsAnnotation, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
+            Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, List<Object> handlers) {
+        for (Object handler : handlers) {
+            setupTransitions(transitionAnnotation, transitionsAnnotation, onEntrySelfTransitionAnnotation, onExitSelfTransitionAnnotation,
+                             states, handler);
+        }
+    }
 
-			}
-			state.addOnEntrySelfTransaction(new MethodSelfTransition(m, handler));
-		}
+    private static void setupSelfTransitions(Method m, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
+            Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, Object handler) {
+        if (m.isAnnotationPresent(OnEntry.class)) {
+            OnEntry onEntryAnnotation = (OnEntry) m.getAnnotation(onEntrySelfTransitionAnnotation);
+            State state = states.get(onEntryAnnotation.value());
+            if (state == null) {
+                throw new StateMachineCreationException("Error encountered " + "when processing onEntry annotation in method " + m
+                        + ". state " + onEntryAnnotation.value() + " not Found.");
 
-		if (m.isAnnotationPresent(OnExit.class)) {
-			OnExit onExitAnnotation = (OnExit) m.getAnnotation(onExitSelfTransitionAnnotation);
-			State state = states.get(onExitAnnotation.value());
-			if (state == null) {
-				throw new StateMachineCreationException("Error encountered " + "when processing onExit annotation in method " + m
-						+ ". state " + onExitAnnotation.value() + " not Found.");
+            }
+            state.addOnEntrySelfTransaction(new MethodSelfTransition(m, handler));
+        }
 
-			}
-			state.addOnExitSelfTransaction(new MethodSelfTransition(m, handler));
-		}
+        if (m.isAnnotationPresent(OnExit.class)) {
+            OnExit onExitAnnotation = (OnExit) m.getAnnotation(onExitSelfTransitionAnnotation);
+            State state = states.get(onExitAnnotation.value());
+            if (state == null) {
+                throw new StateMachineCreationException("Error encountered " + "when processing onExit annotation in method " + m
+                        + ". state " + onExitAnnotation.value() + " not Found.");
 
-	}
+            }
+            state.addOnExitSelfTransaction(new MethodSelfTransition(m, handler));
+        }
 
-	private static void setupTransitions(Class<? extends Annotation> transitionAnnotation,
-			Class<? extends Annotation> transitionsAnnotation, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
-			Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, Object handler) {
+    }
 
-		Method[] methods = handler.getClass().getDeclaredMethods();
-		Arrays.sort(methods, new Comparator<Method>() {
-			public int compare(Method m1, Method m2) {
-				return m1.toString().compareTo(m2.toString());
-			}
-		});
+    private static void setupTransitions(Class<? extends Annotation> transitionAnnotation,
+            Class<? extends Annotation> transitionsAnnotation, Class<? extends Annotation> onEntrySelfTransitionAnnotation,
+            Class<? extends Annotation> onExitSelfTransitionAnnotation, Map<String, State> states, Object handler) {
 
-		for (Method m : methods) {
-			setupSelfTransitions(m, onEntrySelfTransitionAnnotation, onExitSelfTransitionAnnotation, states, handler);
+        Method[] methods = handler.getClass().getDeclaredMethods();
+        Arrays.sort(methods, new Comparator<Method>() {
+            @Override
+            public int compare(Method m1, Method m2) {
+                return m1.toString().compareTo(m2.toString());
+            }
+        });
 
-			List<TransitionWrapper> transitionAnnotations = new ArrayList<TransitionWrapper>();
-			if (m.isAnnotationPresent(transitionAnnotation)) {
-				transitionAnnotations.add(new TransitionWrapper(transitionAnnotation, m.getAnnotation(transitionAnnotation)));
-			}
-			if (m.isAnnotationPresent(transitionsAnnotation)) {
-				transitionAnnotations.addAll(Arrays.asList(new TransitionsWrapper(transitionAnnotation, transitionsAnnotation, m
-						.getAnnotation(transitionsAnnotation)).value()));
-			}
+        for (Method m : methods) {
+            setupSelfTransitions(m, onEntrySelfTransitionAnnotation, onExitSelfTransitionAnnotation, states, handler);
 
-			if (transitionAnnotations.isEmpty()) {
-				continue;
-			}
+            List<TransitionWrapper> transitionAnnotations = new ArrayList<TransitionWrapper>();
+            if (m.isAnnotationPresent(transitionAnnotation)) {
+                transitionAnnotations.add(new TransitionWrapper(transitionAnnotation, m.getAnnotation(transitionAnnotation)));
+            }
+            if (m.isAnnotationPresent(transitionsAnnotation)) {
+                transitionAnnotations.addAll(Arrays.asList(new TransitionsWrapper(transitionAnnotation, transitionsAnnotation, m
+                                                                                  .getAnnotation(transitionsAnnotation)).value()));
+            }
 
-			for (TransitionWrapper annotation : transitionAnnotations) {
-				Object[] eventIds = annotation.on();
-				if (eventIds.length == 0) {
-					throw new StateMachineCreationException("Error encountered " + "when processing method " + m
-							+ ". No event ids specified.");
-				}
-				if (annotation.in().length == 0) {
-					throw new StateMachineCreationException("Error encountered " + "when processing method " + m + ". No states specified.");
-				}
+            if (transitionAnnotations.isEmpty()) {
+                continue;
+            }
 
-				State next = null;
-				if (!annotation.next().equals(Transition.SELF)) {
-					next = states.get(annotation.next());
-					if (next == null) {
-						throw new StateMachineCreationException("Error encountered " + "when processing method " + m
-								+ ". Unknown next state: " + annotation.next() + ".");
-					}
-				}
+            for (TransitionWrapper annotation : transitionAnnotations) {
+                Object[] eventIds = annotation.on();
+                if (eventIds.length == 0) {
+                    throw new StateMachineCreationException("Error encountered " + "when processing method " + m
+                            + ". No event ids specified.");
+                }
+                if (annotation.in().length == 0) {
+                    throw new StateMachineCreationException("Error encountered " + "when processing method " + m + ". No states specified.");
+                }
 
-				for (Object event : eventIds) {
-					if (event == null) {
-						event = Event.WILDCARD_EVENT_ID;
-					}
-					if (!(event instanceof String)) {
-						event = event.toString();
-					}
-					for (String in : annotation.in()) {
-						State state = states.get(in);
-						if (state == null) {
-							throw new StateMachineCreationException("Error encountered " + "when processing method " + m
-									+ ". Unknown state: " + in + ".");
-						}
+                State next = null;
+                if (!annotation.next().equals(Transition.SELF)) {
+                    next = states.get(annotation.next());
+                    if (next == null) {
+                        throw new StateMachineCreationException("Error encountered " + "when processing method " + m
+                                + ". Unknown next state: " + annotation.next() + ".");
+                    }
+                }
 
-						state.addTransition(new MethodTransition(event, next, m, handler), annotation.weight());
-					}
-				}
-			}
-		}
-	}
+                for (Object event : eventIds) {
+                    if (event == null) {
+                        event = Event.WILDCARD_EVENT_ID;
+                    }
+                    if (!(event instanceof String)) {
+                        event = event.toString();
+                    }
+                    for (String in : annotation.in()) {
+                        State state = states.get(in);
+                        if (state == null) {
+                            throw new StateMachineCreationException("Error encountered " + "when processing method " + m
+                                    + ". Unknown state: " + in + ".");
+                        }
 
-	public static List<Field> getFields(Class<?> clazz) {
-		LinkedList<Field> fields = new LinkedList<Field>();
+                        state.addTransition(new MethodTransition(event, next, m, handler), annotation.weight());
+                    }
+                }
+            }
+        }
+    }
 
-		for (Field f : clazz.getDeclaredFields()) {
-			if (!f.isAnnotationPresent(de.ma.it.common.sm.annotation.State.class)) {
-				continue;
-			}
+    public static List<Field> getFields(Class<?> clazz) {
+        LinkedList<Field> fields = new LinkedList<Field>();
 
-			if ((f.getModifiers() & Modifier.STATIC) == 0 || (f.getModifiers() & Modifier.FINAL) == 0 || !f.getType().equals(String.class)) {
-				throw new StateMachineCreationException("Error encountered when " + "processing field " + f + ". Only static final "
-						+ "String fields can be used with the @State " + "annotation.");
-			}
+        for (Field f : clazz.getDeclaredFields()) {
+            if (!f.isAnnotationPresent(de.ma.it.common.sm.annotation.State.class)) {
+                continue;
+            }
 
-			if (!f.isAccessible()) {
-				f.setAccessible(true);
-			}
+            if ((f.getModifiers() & Modifier.STATIC) == 0 || (f.getModifiers() & Modifier.FINAL) == 0 || !f.getType().equals(String.class)) {
+                throw new StateMachineCreationException("Error encountered when " + "processing field " + f + ". Only static final "
+                        + "String fields can be used with the @State " + "annotation.");
+            }
 
-			fields.add(f);
-		}
+            if (!f.isAccessible()) {
+                f.setAccessible(true);
+            }
 
-		return fields;
-	}
+            fields.add(f);
+        }
 
-	public static State[] createStates(List<Field> fields) {
-		LinkedHashMap<String, State> states = new LinkedHashMap<String, State>();
+        return fields;
+    }
 
-		while (!fields.isEmpty()) {
-			int size = fields.size();
-			int numStates = states.size();
-			for (int i = 0; i < size; i++) {
-				Field f = fields.remove(0);
+    public static State[] createStates(List<Field> fields) {
+        LinkedHashMap<String, State> states = new LinkedHashMap<String, State>();
 
-				String value = null;
-				try {
-					value = (String) f.get(null);
-				} catch (IllegalAccessException iae) {
-					throw new StateMachineCreationException("Error encountered when " + "processing field " + f + ".", iae);
-				}
+        while (!fields.isEmpty()) {
+            int size = fields.size();
+            int numStates = states.size();
+            for (int i = 0; i < size; i++) {
+                Field f = fields.remove(0);
 
-				de.ma.it.common.sm.annotation.State stateAnnotation = f.getAnnotation(de.ma.it.common.sm.annotation.State.class);
-				if (stateAnnotation.value().equals(de.ma.it.common.sm.annotation.State.ROOT)) {
-					states.put(value, new State(value));
-				} else if (states.containsKey(stateAnnotation.value())) {
-					states.put(value, new State(value, states.get(stateAnnotation.value())));
-				} else {
+                String value = null;
+                try {
+                    value = (String) f.get(null);
+                } catch (IllegalAccessException iae) {
+                    throw new StateMachineCreationException("Error encountered when " + "processing field " + f + ".", iae);
+                }
+
+                de.ma.it.common.sm.annotation.State stateAnnotation = f.getAnnotation(de.ma.it.common.sm.annotation.State.class);
+                if (stateAnnotation.value().equals(de.ma.it.common.sm.annotation.State.ROOT)) {
+                    states.put(value, new State(value));
+                } else if (states.containsKey(stateAnnotation.value())) {
+                    states.put(value, new State(value, states.get(stateAnnotation.value())));
+                } else {
 					// Move to the back of the list of fields for later
-					// processing
-					fields.add(f);
-				}
-			}
+                    // processing
+                    fields.add(f);
+                }
+            }
 
-			/*
-			 * If no new states were added to states during this iteration it means that all fields in fields specify non-existent parents.
-			 */
-			if (states.size() == numStates) {
-				throw new StateMachineCreationException("Error encountered while creating "
-						+ "FSM. The following fields specify non-existing " + "parent states: " + fields);
-			}
-		}
+            /*
+             * If no new states were added to states during this iteration it means that all fields in fields specify non-existent parents.
+             */
+            if (states.size() == numStates) {
+                throw new StateMachineCreationException("Error encountered while creating "
+                        + "FSM. The following fields specify non-existing " + "parent states: " + fields);
+            }
+        }
 
-		return states.values().toArray(new State[0]);
-	}
+        return states.values().toArray(new State[0]);
+    }
 
-	private static class TransitionWrapper {
-		private final Class<? extends Annotation> transitionClazz;
+    private static class TransitionWrapper {
 
-		private final Annotation annotation;
+        private final Class<? extends Annotation> transitionClazz;
 
-		public TransitionWrapper(Class<? extends Annotation> transitionClazz, Annotation annotation) {
-			this.transitionClazz = transitionClazz;
-			this.annotation = annotation;
-		}
+        private final Annotation annotation;
 
-		Object[] on() {
-			return getParameter("on", Object[].class);
-		}
+        public TransitionWrapper(Class<? extends Annotation> transitionClazz, Annotation annotation) {
+            this.transitionClazz = transitionClazz;
+            this.annotation = annotation;
+        }
 
-		String[] in() {
-			return getParameter("in", String[].class);
-		}
+        Object[] on() {
+            return getParameter("on", Object[].class);
+        }
 
-		String next() {
-			return getParameter("next", String.class);
-		}
+        String[] in() {
+            return getParameter("in", String[].class);
+        }
 
-		int weight() {
-			return getParameter("weight", Integer.TYPE);
-		}
+        String next() {
+            return getParameter("next", String.class);
+        }
 
-		@SuppressWarnings("unchecked")
-		private <T> T getParameter(String name, Class<T> returnType) {
-			try {
-				Method m = transitionClazz.getMethod(name);
-				if (!returnType.isAssignableFrom(m.getReturnType())) {
-					throw new NoSuchMethodException();
-				}
-				return (T) m.invoke(annotation);
-			} catch (Throwable t) {
-				throw new StateMachineCreationException("Could not get parameter '" + name + "' from Transition annotation "
-						+ transitionClazz);
-			}
-		}
-	}
+        int weight() {
+            return getParameter("weight", Integer.TYPE);
+        }
 
-	private static class TransitionsWrapper {
-		private final Class<? extends Annotation> transitionsclazz;
+        @SuppressWarnings("unchecked")
+        private <T> T getParameter(String name, Class<T> returnType) {
+            try {
+                Method m = transitionClazz.getMethod(name);
+                if (!returnType.isAssignableFrom(m.getReturnType())) {
+                    throw new NoSuchMethodException();
+                }
+                return (T) m.invoke(annotation);
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException t) {
+                throw new StateMachineCreationException("Could not get parameter '" + name + "' from Transition annotation "
+                        + transitionClazz);
+            }
+        }
+    }
 
-		private final Class<? extends Annotation> transitionClazz;
+    private static class TransitionsWrapper {
 
-		private final Annotation annotation;
+        private final Class<? extends Annotation> transitionsclazz;
 
-		public TransitionsWrapper(Class<? extends Annotation> transitionClazz, Class<? extends Annotation> transitionsclazz,
-				Annotation annotation) {
-			this.transitionClazz = transitionClazz;
-			this.transitionsclazz = transitionsclazz;
-			this.annotation = annotation;
-		}
+        private final Class<? extends Annotation> transitionClazz;
 
-		TransitionWrapper[] value() {
-			Annotation[] annos = getParameter("value", Annotation[].class);
-			TransitionWrapper[] wrappers = new TransitionWrapper[annos.length];
-			for (int i = 0; i < annos.length; i++) {
-				wrappers[i] = new TransitionWrapper(transitionClazz, annos[i]);
-			}
-			return wrappers;
-		}
+        private final Annotation annotation;
 
-		@SuppressWarnings("unchecked")
-		private <T> T getParameter(String name, Class<T> returnType) {
-			try {
-				Method m = transitionsclazz.getMethod(name);
-				if (!returnType.isAssignableFrom(m.getReturnType())) {
-					throw new NoSuchMethodException();
-				}
-				return (T) m.invoke(annotation);
-			} catch (Throwable t) {
-				throw new StateMachineCreationException("Could not get parameter '" + name + "' from Transitions annotation "
-						+ transitionsclazz);
-			}
-		}
-	}
+        public TransitionsWrapper(Class<? extends Annotation> transitionClazz, Class<? extends Annotation> transitionsclazz,
+                Annotation annotation) {
+            this.transitionClazz = transitionClazz;
+            this.transitionsclazz = transitionsclazz;
+            this.annotation = annotation;
+        }
+
+        TransitionWrapper[] value() {
+            Annotation[] annos = getParameter("value", Annotation[].class);
+            TransitionWrapper[] wrappers = new TransitionWrapper[annos.length];
+            for (int i = 0; i < annos.length; i++) {
+                wrappers[i] = new TransitionWrapper(transitionClazz, annos[i]);
+            }
+            return wrappers;
+        }
+
+        @SuppressWarnings("unchecked")
+        private <T> T getParameter(String name, Class<T> returnType) {
+            try {
+                Method m = transitionsclazz.getMethod(name);
+                if (!returnType.isAssignableFrom(m.getReturnType())) {
+                    throw new NoSuchMethodException();
+                }
+                return (T) m.invoke(annotation);
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException t) {
+                throw new StateMachineCreationException("Could not get parameter '" + name + "' from Transitions annotation "
+                        + transitionsclazz);
+            }
+        }
+    }
 }
