@@ -48,6 +48,7 @@ public class SingletonStateContextLookup implements StateContextLookup {
         context = contextFactory.create();
     }
 
+    @Override
     public StateContext lookup(Object[] eventArgs) {
         return context;
     }

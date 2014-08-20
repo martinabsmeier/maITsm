@@ -60,10 +60,12 @@ public abstract class AbstractTransition implements Transition {
         this.nextState = nextState;
     }
 
+    @Override
     public State getNextState() {
         return nextState;
     }
 
+    @Override
     public boolean execute(Event event) {
         if (!eventId.equals(Event.WILDCARD_EVENT_ID) && !eventId.equals(event.getId())) {
             return false;
@@ -84,6 +86,7 @@ public abstract class AbstractTransition implements Transition {
      */
     protected abstract boolean doExecute(Event event);
 
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof AbstractTransition)) {
             return false;
@@ -95,10 +98,12 @@ public abstract class AbstractTransition implements Transition {
         return new EqualsBuilder().append(eventId, that.eventId).append(nextState, that.nextState).isEquals();
     }
 
+    @Override
     public int hashCode() {
         return new HashCodeBuilder(11, 31).append(eventId).append(nextState).toHashCode();
     }
 
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("eventId", eventId).append("nextState", nextState).toString();
     }
