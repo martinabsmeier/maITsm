@@ -34,6 +34,8 @@ public @interface OnExit {
 
 	/**
 	 * Sets the id of related state.
+     * 
+     * @return The state
 	 */
 	String value();
 

@@ -37,6 +37,7 @@ public interface EventFactory {
 	 *            the current {@link StateContext}.
 	 * @param method
 	 *            the method being invoked.
+     * @param arguments
 	 * @param args
 	 *            the method arguments.
 	 * @return the {@link Event} object.

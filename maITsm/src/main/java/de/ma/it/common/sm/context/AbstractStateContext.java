@@ -26,40 +26,45 @@ import de.ma.it.common.sm.State;
 
 /**
  * Abstract {@link StateContext} which uses a {@link Map} to store the attributes.
- * 
+ *
  * @author Martin Absmeier
  */
 public abstract class AbstractStateContext implements StateContext {
 
-	private State currentState = null;
+    private State currentState = null;
 
-	private Map<Object, Object> attributes = null;
+    private Map<Object, Object> attributes = null;
 
-	public Object getAttribute(Object key) {
-		return getAttributes().get(key);
-	}
+    @Override
+    public Object getAttribute(Object key) {
+        return getAttributes().get(key);
+    }
 
-	public State getCurrentState() {
-		return currentState;
-	}
+    @Override
+    public State getCurrentState() {
+        return currentState;
+    }
 
-	public void setAttribute(Object key, Object value) {
-		getAttributes().put(key, value);
-	}
+    @Override
+    public void setAttribute(Object key, Object value) {
+        getAttributes().put(key, value);
+    }
 
-	public void setCurrentState(State state) {
-		currentState = state;
-	}
+    @Override
+    public void setCurrentState(State state) {
+        currentState = state;
+    }
 
-	protected Map<Object, Object> getAttributes() {
-		if (attributes == null) {
-			attributes = new HashMap<Object, Object>();
-		}
-		return attributes;
-	}
+    protected Map<Object, Object> getAttributes() {
+        if (attributes == null) {
+            attributes = new HashMap<Object, Object>();
+        }
+        return attributes;
+    }
 
-	public String toString() {
-		return new ToStringBuilder(this).append("currentState", currentState).append("attributes", attributes).toString();
-	}
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("currentState", currentState).append("attributes", attributes).toString();
+    }
 
 }

@@ -21,19 +21,19 @@ import de.ma.it.common.sm.State;
 import de.ma.it.common.sm.context.StateContext;
 
 /**
- * The interface implemented by classes which need to react on entering
- * a certain states.
+ * The interface implemented by classes which need to react on entering a certain states.
  *
  * @author Martin Absmeier
  */
 public interface SelfTransition {
+
     /**
      * Executes this {@link SelfTransition}.
-     * 
-     * @return <code>true</code> if the {@link SelfTransition} was executed,
-     *         <code>false</code> otherwise.
+     *
+     * @param stateContext
+     * @param state
+     * @return <code>true</code> if the {@link SelfTransition} was executed, <code>false</code> otherwise.
      */
-
     boolean execute(StateContext stateContext, State state);
 
 }

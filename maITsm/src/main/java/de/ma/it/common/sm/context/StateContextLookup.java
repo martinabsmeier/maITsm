@@ -21,17 +21,19 @@ import de.ma.it.common.sm.event.Event;
 
 /**
  * Lookups a {@link StateContext} from a collection of event arguments.
- * 
+ *
  * @author Martin Absmeier
  */
 public interface StateContextLookup {
 
-	/**
-	 * Searches the arguments from an {@link Event} and returns a {@link StateContext} if any of the
-	 * arguments holds one. NOTE! This method must create a new {@link StateContext} if a compatible
-	 * object is in the arguments and the next time that same object is passed to this method the
-	 * same {@link StateContext} should be returned.
-	 */
-	StateContext lookup(Object[] eventArgs);
+    /**
+     * Searches the arguments from an {@link Event} and returns a {@link StateContext} if any of the arguments holds
+     * one. NOTE! This method must create a new {@link StateContext} if a compatible object is in the arguments and the
+     * next time that same object is passed to this method the same {@link StateContext} should be returned.
+     *
+     * @param eventArgs
+     * @return
+     */
+    StateContext lookup(Object[] eventArgs);
 
 }

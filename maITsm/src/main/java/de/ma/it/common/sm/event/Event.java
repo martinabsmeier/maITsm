@@ -100,6 +100,7 @@ public class Event {
 		return arguments;
 	}
 
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this).append("id", id).append("context", context).append("arguments", arguments)
 				.toString();

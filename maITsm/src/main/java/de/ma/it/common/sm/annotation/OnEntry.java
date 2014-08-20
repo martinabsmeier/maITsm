@@ -33,6 +33,8 @@ public @interface OnEntry {
 
 	/**
 	 * Sets the id of related state.
+     * 
+     * @return The state
 	 */
 	String value();
 

@@ -25,6 +25,7 @@ package de.ma.it.common.sm.context;
  */
 public class DefaultStateContextFactory implements StateContextFactory {
 
+    @Override
     public StateContext create() {
         return new DefaultStateContext();
     }

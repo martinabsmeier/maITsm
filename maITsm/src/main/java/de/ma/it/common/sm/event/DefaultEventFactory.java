@@ -29,6 +29,7 @@ import de.ma.it.common.sm.context.StateContext;
  */
 public class DefaultEventFactory implements EventFactory {
 
+    @Override
     public Event create(StateContext context, Method method, Object[] arguments) {
         return new Event(method.getName(), context, arguments);
     }

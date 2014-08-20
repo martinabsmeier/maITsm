@@ -38,6 +38,7 @@ public abstract class AbstractSelfTransition implements SelfTransition {
     /**
      * Executes this {@link SelfTransition}.
      * 
+     * @param stateContext
      * @return <code>true</code> if the {@link SelfTransition} has been executed
      *         successfully
      */
