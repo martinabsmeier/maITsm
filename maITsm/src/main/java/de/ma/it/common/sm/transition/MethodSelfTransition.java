@@ -57,6 +57,7 @@ public class MethodSelfTransition extends AbstractSelfTransition {
     /**
      * Creates a new instance
      * 
+     * @param methodName
      * @param method the target method.
      * @param target the target object.
      */
@@ -66,12 +67,12 @@ public class MethodSelfTransition extends AbstractSelfTransition {
 
         Method[] candidates = target.getClass().getMethods();
         Method result = null;
-        for (int i = 0; i < candidates.length; i++) {
-            if (candidates[i].getName().equals(methodName)) {
+        for (Method candidate : candidates) {
+            if (candidate.getName().equals(methodName)) {
                 if (result != null) {
                     throw new AmbiguousMethodException(methodName);
                 }
-                result = candidates[i];
+                result = candidate;
             }
         }
 
@@ -92,6 +93,7 @@ public class MethodSelfTransition extends AbstractSelfTransition {
         return method;
     }
 
+    @Override
     public boolean doExecute(StateContext stateContext, State state) {
         Class<?>[] types = method.getParameterTypes();
 

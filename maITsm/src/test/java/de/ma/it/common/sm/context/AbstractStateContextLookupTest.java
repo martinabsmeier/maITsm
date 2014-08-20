@@ -35,17 +35,20 @@ public class AbstractStateContextLookupTest extends TestCase {
     public void testLookup() throws Exception {
         Map<String, StateContext> map = new HashMap<String, StateContext>();
         AbstractStateContextLookup lookup = new AbstractStateContextLookup(new DefaultStateContextFactory()) {
+            @Override
             protected boolean supports(Class<?> c) {
                 return Map.class.isAssignableFrom(c);
             }
 
             @SuppressWarnings("unchecked")
+            @Override
             protected StateContext lookup(Object eventArg) {
                 Map<String, StateContext> map = (Map<String, StateContext>) eventArg;
                 return map.get("context");
             }
 
             @SuppressWarnings("unchecked")
+            @Override
             protected void store(Object eventArg, StateContext context) {
                 Map<String, StateContext> map = (Map<String, StateContext>) eventArg;
                 map.put("context", context);

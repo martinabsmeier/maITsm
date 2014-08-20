@@ -45,17 +45,18 @@ public abstract class AbstractStateContextLookup implements StateContextLookup {
 		this.contextFactory = contextFactory;
 	}
 
+    @Override
 	public StateContext lookup(Object[] eventArgs) {
-		for (int i = 0; i < eventArgs.length; i++) {
-			if (supports(eventArgs[i].getClass())) {
-				StateContext sc = lookup(eventArgs[i]);
-				if (sc == null) {
-					sc = contextFactory.create();
-					store(eventArgs[i], sc);
-				}
-				return sc;
-			}
-		}
+        for (Object eventArg : eventArgs) {
+            if (supports(eventArg.getClass())) {
+                StateContext sc = lookup(eventArg);
+                if (sc == null) {
+                    sc = contextFactory.create();
+                    store(eventArg, sc);
+                }
+                return sc;
+            }
+        }
 		return null;
 	}
 

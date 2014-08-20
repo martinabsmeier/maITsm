@@ -102,7 +102,8 @@ public class Event {
 
     @Override
 	public String toString() {
-		return new ToStringBuilder(this).append("id", id).append("context", context).append("arguments", arguments)
-				.toString();
+        ToStringBuilder sb = new ToStringBuilder(this);
+		sb.append("id", id).append("context", context).append("arguments", arguments);
+		return sb.toString();
 	}
 }
