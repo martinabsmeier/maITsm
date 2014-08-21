@@ -47,7 +47,7 @@ import de.ma.it.common.sm.transition.Transition;
  *
  * @author Martin Absmeier
  */
-public class StateMachine {
+public final class StateMachine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StateMachine.class);
 
@@ -92,7 +92,7 @@ public class StateMachine {
      * @param startStateId the id of the start {@link State}.
      */
     public StateMachine(Collection<State> states, String startStateId) {
-        this(states.toArray(new State[0]), startStateId);
+        this(states.toArray(new State[states.size()]), startStateId);
     }
 
     /**

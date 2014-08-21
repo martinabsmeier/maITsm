@@ -19,48 +19,45 @@ package de.ma.it.common.sm.context;
 
 import de.ma.it.common.sm.State;
 import de.ma.it.common.sm.StateMachine;
+import java.io.Serializable;
 
 /**
- * {@link StateContext} objects are used to store the current {@link State} and any application specific attributes for a specific client of
- * a {@link StateMachine}. Since {@link StateMachine}s are singletons and shared by all clients using the {@link StateMachine} this is where
- * client specific data needs to be stored.
- * 
+ * {@link StateContext} objects are used to store the current {@link State} and any application specific attributes for
+ * a specific client of a {@link StateMachine}. Since {@link StateMachine}s are singletons and shared by all clients
+ * using the {@link StateMachine} this is where client specific data needs to be stored.
+ *
  * @author Martin Absmeier
  */
-public interface StateContext {
+public interface StateContext extends Serializable {
 
-	/**
-	 * Returns the current {@link State}. This is only meant for internal use.
-	 * 
-	 * @return the current {@link State}.
-	 */
-	State getCurrentState();
+    /**
+     * Returns the current {@link State}. This is only meant for internal use.
+     *
+     * @return the current {@link State}.
+     */
+    State getCurrentState();
 
-	/**
-	 * Sets the current {@link State}. This is only meant for internal use. Don't call it directly!
-	 * 
-	 * @param state
-	 *            the new current {@link State}.
-	 */
-	void setCurrentState(State state);
+    /**
+     * Sets the current {@link State}. This is only meant for internal use. Don't call it directly!
+     *
+     * @param state the new current {@link State}.
+     */
+    void setCurrentState(State state);
 
-	/**
-	 * Returns the value of the attribute with the specified key or <code>null</code>if not found.
-	 * 
-	 * @param key
-	 *            the key.
-	 * @return the value or <code>null</code>.
-	 */
-	Object getAttribute(Object key);
+    /**
+     * Returns the value of the attribute with the specified key or <code>null</code>if not found.
+     *
+     * @param key the key.
+     * @return the value or <code>null</code>.
+     */
+    Object getAttribute(Object key);
 
-	/**
-	 * Sets the value of the attribute with the specified key.
-	 * 
-	 * @param key
-	 *            the key.
-	 * @param value
-	 *            the value.
-	 */
-	void setAttribute(Object key, Object value);
+    /**
+     * Sets the value of the attribute with the specified key.
+     *
+     * @param key the key.
+     * @param value the value.
+     */
+    void setAttribute(Object key, Object value);
 
 }

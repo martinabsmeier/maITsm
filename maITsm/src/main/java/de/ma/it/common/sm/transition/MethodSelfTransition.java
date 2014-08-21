@@ -28,18 +28,18 @@ import de.ma.it.common.sm.State;
 import de.ma.it.common.sm.context.StateContext;
 
 /**
- * {@link SelfTransition} which invokes a {@link Method}. The {@link Method} can
- * have zero or any number of StateContext and State regarding order
+ * {@link SelfTransition} which invokes a {@link Method}. The {@link Method} can have zero or any number of StateContext
+ * and State regarding order
  * <p>
- * Normally you wouldn't create instances of this class directly but rather use the
- * {@link SelfTransition} annotation to define the methods which should be used as
- * transitions in your state machine and then let {@link StateMachineFactory} create a
- * {@link StateMachine} for you.
+ * Normally you wouldn't create instances of this class directly but rather use the {@link SelfTransition} annotation to
+ * define the methods which should be used as transitions in your state machine and then let {@link StateMachineFactory}
+ * create a {@link StateMachine} for you.
  * </p>
  *
  * @author Martin Absmeier
  */
 public class MethodSelfTransition extends AbstractSelfTransition {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodTransition.class);
 
     private Method method;
@@ -56,7 +56,7 @@ public class MethodSelfTransition extends AbstractSelfTransition {
 
     /**
      * Creates a new instance
-     * 
+     *
      * @param methodName
      * @param method the target method.
      * @param target the target object.
@@ -81,12 +81,11 @@ public class MethodSelfTransition extends AbstractSelfTransition {
         }
 
         this.method = result;
-
     }
 
     /**
      * Returns the target {@link Method}.
-     * 
+     *
      * @return the method.
      */
     public Method getMethod() {

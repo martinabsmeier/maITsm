@@ -124,8 +124,7 @@ public class State {
     /**
      * Adds an entry {@link SelfTransition} to this {@link State}
      *
-     * @param onEntrySelfTransaction
-     * @param selfTransition the {@link SelfTransition} to add.
+     * @param onEntrySelfTransaction the {@link SelfTransition} to add.
      * @return this {@link State}.
      */
     public State addOnEntrySelfTransaction(SelfTransition onEntrySelfTransaction) {
@@ -139,8 +138,7 @@ public class State {
     /**
      * Adds an exit {@link SelfTransition} to this {@link State}
      *
-     * @param onExitSelfTransaction
-     * @param selfTransition the {@link SelfTransition} to add.
+     * @param onExitSelfTransaction The {@link SelfTransition} to add.
      * @return this {@link State}.
      */
     public State addOnExitSelfTransaction(SelfTransition onExitSelfTransaction) {
@@ -213,6 +211,7 @@ public class State {
     }
 
     private static class TransitionHolder implements Comparable<TransitionHolder> {
+
         Transition transition;
         int weight;
 
@@ -225,5 +224,23 @@ public class State {
         public int compareTo(TransitionHolder o) {
             return (weight > o.weight) ? 1 : (weight < o.weight ? -1 : 0);
         }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(13, 33).append(weight).toHashCode();
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            final TransitionHolder other = (TransitionHolder) obj;
+            return new EqualsBuilder().append(this.weight, other.weight).isEquals();
+        }
+
     }
 }

@@ -23,5 +23,6 @@ package de.ma.it.common.sm.context;
  * @author Martin Absmeier
  */
 public class DefaultStateContext extends AbstractStateContext {
+    private static final long serialVersionUID = 8061760934773298712L;
 
 }
