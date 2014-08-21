@@ -20,6 +20,7 @@ package de.ma.it.common.sm.event;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import de.ma.it.common.sm.context.StateContext;
+import java.io.Serializable;
 
 /**
  * Represents an event which typically corresponds to a method call on a proxy. An event has an id
@@ -27,8 +28,10 @@ import de.ma.it.common.sm.context.StateContext;
  * 
  * @author Martin Absmeier
  */
-public class Event {
+public class Event implements Serializable {
 	public static final String WILDCARD_EVENT_ID = "*";
+    
+    private static final long serialVersionUID = -7224996357207464822L;
 
 	private final Object id;
 

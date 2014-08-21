@@ -315,7 +315,7 @@ public class StateMachineFactory {
             }
         }
 
-        return states.values().toArray(new State[0]);
+        return states.values().toArray(new State[states.size()]);
     }
 
     private static class TransitionWrapper {
