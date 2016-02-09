@@ -311,7 +311,7 @@ public class StateMachineFactory {
              */
             if (states.size() == numStates) {
                 throw new StateMachineCreationException("Error encountered while creating "
-                        + "FSM. The following fields specify non-existing " + "parent states: " + fields);
+                        + "FSM. The following fields specify non-existing parent states: " + fields);
             }
         }
 

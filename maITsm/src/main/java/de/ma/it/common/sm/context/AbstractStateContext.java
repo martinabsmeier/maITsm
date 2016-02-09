@@ -31,7 +31,9 @@ import de.ma.it.common.sm.State;
  */
 public abstract class AbstractStateContext implements StateContext {
 
-    private State currentState = null;
+	private static final long serialVersionUID = -9163548435437416302L;
+
+	private State currentState = null;
 
     private Map<Object, Object> attributes = null;
 
