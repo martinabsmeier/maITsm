@@ -24,13 +24,6 @@
         </developer>
     </developers>
 
-    <contributors>
-        <contributor>
-            <name>Martin Absmeier</name>
-            <email>martin.absmeier@gmx.de</email>
-        </contributor>
-    </contributors>
-
     <licenses>
         <license>
             <name>GNU General Public License</name>
