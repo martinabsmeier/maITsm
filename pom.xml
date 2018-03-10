@@ -17,13 +17,6 @@
         <name>maIT Consulting Services</name>
     </organization>
 
-    <developers>
-        <developer>
-            <name>Martin Absmeier</name>
-            <email>martin.absmeier@gmx.de</email>
-        </developer>
-    </developers>
-
     <licenses>
         <license>
             <name>GNU General Public License</name>

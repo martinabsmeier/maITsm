@@ -39,7 +39,7 @@ import de.ma.it.common.sm.transition.MethodTransition;
  */
 public class StateMachineProxyBuilderTest extends TestCase {
     @Test
-    public void testReentrantStateMachine() throws Exception {
+    public void testReentrantStateMachine() {
         ReentrantStateMachineHandler handler = new ReentrantStateMachineHandler();
 
         State s1 = new State("s1");
@@ -57,7 +57,7 @@ public class StateMachineProxyBuilderTest extends TestCase {
     }
 
     @Test
-    public void testTapeDeckStateMachine() throws Exception {
+    public void testTapeDeckStateMachine() {
         TapeDeckStateMachineHandler handler = new TapeDeckStateMachineHandler();
 
         State parent = new State("parent");
@@ -115,7 +115,7 @@ public class StateMachineProxyBuilderTest extends TestCase {
     }
 
     @Test
-    public void testTapeDeckStateMachineAnnotations() throws Exception {
+    public void testTapeDeckStateMachineAnnotations() {
         TapeDeckStateMachineHandler handler = new TapeDeckStateMachineHandler();
 
         StateMachine sm = StateMachineFactory.getInstance(Transition.class).create(TapeDeckStateMachineHandler.S1,

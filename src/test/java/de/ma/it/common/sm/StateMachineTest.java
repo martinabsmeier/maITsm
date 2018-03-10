@@ -35,7 +35,7 @@ import de.ma.it.common.sm.transition.AbstractTransition;
 public class StateMachineTest extends TestCase {
 
     @Test
-    public void testBreakAndContinue() throws Exception {
+    public void testBreakAndContinue() {
         State s1 = new State("s1");
         s1.addTransition(new BreakAndContinueTransition("foo"));
         s1.addTransition(new SuccessTransition("foo"));
@@ -47,7 +47,7 @@ public class StateMachineTest extends TestCase {
     }
 
     @Test
-    public void testBreakAndGotoNow() throws Exception {
+    public void testBreakAndGotoNow() {
         State s1 = new State("s1");
         State s2 = new State("s2");
         s1.addTransition(new BreakAndGotoNowTransition("foo", "s2"));
@@ -60,7 +60,7 @@ public class StateMachineTest extends TestCase {
     }
 
     @Test
-    public void testBreakAndGotoNext() throws Exception {
+    public void testBreakAndGotoNext() {
         State s1 = new State("s1");
         State s2 = new State("s2");
         s1.addTransition(new BreakAndGotoNextTransition("foo", "s2"));
