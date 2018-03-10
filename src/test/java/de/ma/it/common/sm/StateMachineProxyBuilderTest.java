@@ -19,7 +19,8 @@ package de.ma.it.common.sm;
 
 import java.util.LinkedList;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -37,7 +38,7 @@ import de.ma.it.common.sm.transition.MethodTransition;
  *
  * @author Martin Absmeier
  */
-public class StateMachineProxyBuilderTest extends TestCase {
+public class StateMachineProxyBuilderTest {
     @Test
     public void testReentrantStateMachine() {
         ReentrantStateMachineHandler handler = new ReentrantStateMachineHandler();
@@ -50,7 +51,7 @@ public class StateMachineProxyBuilderTest extends TestCase {
         s2.addTransition(new MethodTransition("call2", s3, handler));
         s3.addTransition(new MethodTransition("call3", handler));
 
-        StateMachine sm = new StateMachine(new State[] { s1, s2, s3 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1, s2, s3}, "s1");
         Reentrant reentrant = new StateMachineProxyBuilder().create(Reentrant.class, sm);
         reentrant.call1(reentrant);
         assertTrue(handler.finished);
@@ -84,7 +85,7 @@ public class StateMachineProxyBuilderTest extends TestCase {
         s4.addOnEntrySelfTransaction(new MethodSelfTransition("onEntryS4", handler));
         s4.addOnExitSelfTransaction(new MethodSelfTransition("onExitS4", handler));
 
-        StateMachine sm = new StateMachine(new State[] { s1, s2, s3, s4, s5 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1, s2, s3, s4, s5}, "s1");
         TapeDeck player = new StateMachineProxyBuilder().create(TapeDeck.class, sm);
         player.insert("Kings of convenience - Riot on an empty street");
         player.start();
@@ -247,8 +248,8 @@ public class StateMachineProxyBuilderTest extends TestCase {
             messages.add("Tape ejected");
         }
 
-        @Transitions({ @Transition(on = "start", in = "s2", next = "s3"),
-                @Transition(on = "pause", in = "s5", next = "s3") })
+        @Transitions({@Transition(on = "start", in = "s2", next = "s3"),
+                @Transition(on = "pause", in = "s5", next = "s3")})
         public void playing() {
             messages.add("Playing");
         }

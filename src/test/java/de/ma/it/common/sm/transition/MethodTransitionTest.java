@@ -17,25 +17,25 @@
  */
 package de.ma.it.common.sm.transition;
 
-import java.lang.reflect.Method;
-
-import junit.framework.TestCase;
-
+import de.ma.it.common.sm.State;
+import de.ma.it.common.sm.context.StateContext;
+import de.ma.it.common.sm.event.Event;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import de.ma.it.common.sm.State;
-import de.ma.it.common.sm.context.StateContext;
-import de.ma.it.common.sm.event.Event;
+import java.lang.reflect.Method;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests {@link MethodTransition}.
  *
  * @author Martin Absmeier
  */
-public class MethodTransitionTest extends TestCase {
+public class MethodTransitionTest {
 
     private State nextState;
 
@@ -54,9 +54,7 @@ public class MethodTransitionTest extends TestCase {
     private Object[] args;
 
     @Before
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void setUp() throws Exception {
         nextState = new State("next");
         target = (Target) Mockito.mock(Target.class);
         subsetAllArgsMethod1 = Target.class.getMethod("subsetAllArgs", new Class[]{TestStateContext.class, B.class, A.class, Integer.TYPE});
@@ -68,9 +66,7 @@ public class MethodTransitionTest extends TestCase {
     }
 
     @After
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    public void tearDown() {
         nextState = null;
         target = null;
         subsetAllArgsMethod1 = null;
@@ -82,74 +78,73 @@ public class MethodTransitionTest extends TestCase {
     }
 
     @Test
-    public void testExecuteWrongEventId() throws Exception {
+    public void testExecuteWrongEventId() {
         MethodTransition t = new MethodTransition("otherEvent", nextState, "noArgs", target);
         assertFalse(t.execute(noArgsEvent));
     }
 
     @Test
-    public void testExecuteNoArgsMethodOnNoArgsEvent() throws Exception {
+    public void testExecuteNoArgsMethodOnNoArgsEvent() {
         target.noArgs();
         MethodTransition t = new MethodTransition("event", nextState, "noArgs", target);
         assertTrue(t.execute(noArgsEvent));
     }
 
     @Test
-    public void testExecuteNoArgsMethodOnArgsEvent() throws Exception {
+    public void testExecuteNoArgsMethodOnArgsEvent() {
         target.noArgs();
         MethodTransition t = new MethodTransition("event", nextState, "noArgs", target);
         assertTrue(t.execute(argsEvent));
     }
 
     @Test
-    public void testExecuteExactArgsMethodOnNoArgsEvent() throws Exception {
+    public void testExecuteExactArgsMethodOnNoArgsEvent() {
         MethodTransition t = new MethodTransition("event", nextState, "exactArgs", target);
         assertFalse(t.execute(noArgsEvent));
     }
 
     @Test
-    public void testExecuteExactArgsMethodOnArgsEvent() throws Exception {
+    public void testExecuteExactArgsMethodOnArgsEvent() {
         target.exactArgs((A) args[0], (B) args[1], (C) args[2], ((Integer) args[3]), ((Boolean) args[4]));
         MethodTransition t = new MethodTransition("event", nextState, "exactArgs", target);
         assertTrue(t.execute(argsEvent));
     }
 
     @Test
-    public void testExecuteSubsetExactArgsMethodOnNoArgsEvent() throws Exception {
+    public void testExecuteSubsetExactArgsMethodOnNoArgsEvent() {
         MethodTransition t = new MethodTransition("event", nextState, "subsetExactArgs", target);
         assertFalse(t.execute(noArgsEvent));
     }
 
     @Test
-    public void testExecuteSubsetExactArgsMethodOnArgsEvent() throws Exception {
+    public void testExecuteSubsetExactArgsMethodOnArgsEvent() {
         target.subsetExactArgs((A) args[0], (A) args[1], ((Integer) args[3]));
         MethodTransition t = new MethodTransition("event", nextState, "subsetExactArgs", target);
         assertTrue(t.execute(argsEvent));
     }
 
     @Test
-    public void testExecuteAllArgsMethodOnArgsEvent() throws Exception {
+    public void testExecuteAllArgsMethodOnArgsEvent() {
         target.allArgs(argsEvent, context, (A) args[0], (B) args[1], (C) args[2], ((Integer) args[3]), ((Boolean) args[4]));
         MethodTransition t = new MethodTransition("event", nextState, "allArgs", target);
         assertTrue(t.execute(argsEvent));
     }
 
     @Test
-    public void testExecuteSubsetAllArgsMethod1OnArgsEvent() throws Exception {
+    public void testExecuteSubsetAllArgsMethod1OnArgsEvent() {
         target.subsetAllArgs(context, (B) args[1], (A) args[2], ((Integer) args[3]));
         MethodTransition t = new MethodTransition("event", nextState, subsetAllArgsMethod1, target);
         assertTrue(t.execute(argsEvent));
     }
 
     @Test
-    public void testExecuteSubsetAllArgsMethod2OnArgsEvent() throws Exception {
+    public void testExecuteSubsetAllArgsMethod2OnArgsEvent() {
         target.subsetAllArgs(argsEvent, (B) args[1], (B) args[2], ((Boolean) args[4]));
         MethodTransition t = new MethodTransition("event", nextState, subsetAllArgsMethod2, target);
         assertTrue(t.execute(argsEvent));
     }
 
     public interface Target {
-
         void noArgs();
 
         void exactArgs(A a, B b, C c, int integer, boolean bool);

@@ -36,7 +36,7 @@ public class TapeDeckTest {
         TapeDeck deck = new StateMachineProxyBuilder().create(TapeDeck.class, sm);
 
         deck.load("The Knife - Silent Shout");
-        deck. play();
+        deck.play();
         deck.pause();
         deck.play();
         deck.stop();

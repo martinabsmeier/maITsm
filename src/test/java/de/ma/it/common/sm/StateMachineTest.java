@@ -17,22 +17,23 @@
  */
 package de.ma.it.common.sm;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import de.ma.it.common.sm.context.DefaultStateContext;
 import de.ma.it.common.sm.context.StateContext;
 import de.ma.it.common.sm.event.Event;
 import de.ma.it.common.sm.transition.AbstractSelfTransition;
 import de.ma.it.common.sm.transition.AbstractTransition;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 
 /**
  * Tests {@link StateMachine}.
  *
  * @author Martin Absmeier
  */
-public class StateMachineTest extends TestCase {
+public class StateMachineTest {
 
     @Test
     public void testBreakAndContinue() {
@@ -41,7 +42,7 @@ public class StateMachineTest extends TestCase {
         s1.addTransition(new SuccessTransition("foo"));
 
         StateContext context = new DefaultStateContext();
-        StateMachine sm = new StateMachine(new State[] { s1 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1}, "s1");
         sm.handle(new Event("foo", context));
         assertEquals(true, context.getAttribute("success"));
     }
@@ -54,7 +55,7 @@ public class StateMachineTest extends TestCase {
         s2.addTransition(new SuccessTransition("foo"));
 
         StateContext context = new DefaultStateContext();
-        StateMachine sm = new StateMachine(new State[] { s1, s2 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1, s2}, "s1");
         sm.handle(new Event("foo", context));
         assertEquals(true, context.getAttribute("success"));
     }
@@ -67,7 +68,7 @@ public class StateMachineTest extends TestCase {
         s2.addTransition(new SuccessTransition("foo"));
 
         StateContext context = new DefaultStateContext();
-        StateMachine sm = new StateMachine(new State[] { s1, s2 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1, s2}, "s1");
         sm.handle(new Event("foo", context));
         assertSame(s2, context.getCurrentState());
         sm.handle(new Event("foo", context));
@@ -156,11 +157,10 @@ public class StateMachineTest extends TestCase {
             stateContext.setAttribute("SelfSuccess" + state.getId(), true);
             return true;
         }
-
     }
 
     @Test
-    public void testOnEntry() throws Exception {
+    public void testOnEntry() {
         State s1 = new State("s1");
         State s2 = new State("s2");
 
@@ -169,12 +169,11 @@ public class StateMachineTest extends TestCase {
         s2.addOnEntrySelfTransaction(new SampleSelfTransition());
 
         StateContext context = new DefaultStateContext();
-        StateMachine sm = new StateMachine(new State[] { s1, s2 }, "s1");
+        StateMachine sm = new StateMachine(new State[]{s1, s2}, "s1");
         sm.handle(new Event("foo", context));
         assertEquals(true, context.getAttribute("success"));
         assertEquals(true, context.getAttribute("SelfSuccess" + s1.getId()));
         assertEquals(true, context.getAttribute("SelfSuccess" + s2.getId()));
-
     }
 
 }

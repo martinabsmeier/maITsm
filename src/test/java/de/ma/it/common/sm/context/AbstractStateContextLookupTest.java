@@ -17,23 +17,23 @@
  */
 package de.ma.it.common.sm.context;
 
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
+import static org.junit.Assert.assertSame;
 
 /**
  * Tests {@link AbstractStateContextLookup}.
  *
  * @author Martin Absmeier
  */
-public class AbstractStateContextLookupTest extends TestCase {
+public class AbstractStateContextLookupTest {
 
     @Test
-    public void testLookup() throws Exception {
-        Map<String, StateContext> map = new HashMap<String, StateContext>();
+    public void testLookup() {
+        Map<String, StateContext> map = new HashMap<>();
         AbstractStateContextLookup lookup = new AbstractStateContextLookup(new DefaultStateContextFactory()) {
             @Override
             protected boolean supports(Class<?> c) {
@@ -54,6 +54,7 @@ public class AbstractStateContextLookupTest extends TestCase {
                 map.put("context", context);
             }
         };
+
         Object[] args1 = new Object[] { new Object(), map, new Object() };
         Object[] args2 = new Object[] { map, new Object() };
         StateContext sc = lookup.lookup(args1);

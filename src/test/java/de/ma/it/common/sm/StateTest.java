@@ -17,21 +17,20 @@
  */
 package de.ma.it.common.sm;
 
-import junit.framework.TestCase;
-
+import de.ma.it.common.sm.transition.Transition;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import de.ma.it.common.sm.transition.Transition;
+import static org.junit.Assert.*;
 
 /**
  * Tests {@link State}.
  *
  * @author Martin Absmeier
  */
-public class StateTest extends TestCase {
+public class StateTest {
     State state;
 
     Transition transition1;
@@ -41,27 +40,23 @@ public class StateTest extends TestCase {
     Transition transition3;
 
     @Before
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void setUp() {
         state = new State("test");
-        transition1 = (Transition) Mockito.mock(Transition.class);
-        transition2 = (Transition) Mockito.mock(Transition.class);
-        transition3 = (Transition) Mockito.mock(Transition.class);
+        transition1 = Mockito.mock(Transition.class);
+        transition2 = Mockito.mock(Transition.class);
+        transition3 = Mockito.mock(Transition.class);
     }
 
     @After
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    public void tearDown() {
         state = null;
         transition1 = null;
         transition2 = null;
         transition3 = null;
     }
-    
+
     @Test
-    public void testAddFirstTransition() throws Exception {
+    public void testAddFirstTransition() {
         assertTrue(state.getTransitions().isEmpty());
         state.addTransition(transition1);
         assertFalse(state.getTransitions().isEmpty());
@@ -70,7 +65,7 @@ public class StateTest extends TestCase {
     }
 
     @Test
-    public void testUnweightedTransitions() throws Exception {
+    public void testUnweightedTransitions() {
         assertTrue(state.getTransitions().isEmpty());
         state.addTransition(transition1);
         state.addTransition(transition2);
@@ -82,7 +77,7 @@ public class StateTest extends TestCase {
     }
 
     @Test
-    public void testWeightedTransitions() throws Exception {
+    public void testWeightedTransitions() {
         assertTrue(state.getTransitions().isEmpty());
         state.addTransition(transition1, 10);
         state.addTransition(transition2, 5);
@@ -94,12 +89,12 @@ public class StateTest extends TestCase {
     }
 
     @Test
-    public void testAddTransitionReturnsSelf() throws Exception {
+    public void testAddTransitionReturnsSelf() {
         assertSame(state, state.addTransition(transition1));
     }
 
     @Test
-    public void testAddNullTransitionThrowsException() throws Exception {
+    public void testAddNullTransitionThrowsException() {
         try {
             state.addTransition(null);
             fail("null transition added. IllegalArgumentException expected.");
