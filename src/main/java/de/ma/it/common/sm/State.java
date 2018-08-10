@@ -48,13 +48,13 @@ public class State {
 
     private final State parent;
 
-    private final List<TransitionHolder> transitionHolders = new ArrayList<TransitionHolder>();
+    private final List<TransitionHolder> transitionHolders = new ArrayList<>();
 
     private List<Transition> transitions = Collections.emptyList();
 
-    private final List<SelfTransition> onEntries = new ArrayList<SelfTransition>();
+    private final List<SelfTransition> onEntries = new ArrayList<>();
 
-    private final List<SelfTransition> onExits = new ArrayList<SelfTransition>();
+    private final List<SelfTransition> onExits = new ArrayList<>();
 
     /**
      * Creates a new {@link State} with the specified id.
@@ -221,8 +221,8 @@ public class State {
         }
 
         @Override
-        public int compareTo(TransitionHolder o) {
-            return (weight > o.weight) ? 1 : (weight < o.weight ? -1 : 0);
+        public int compareTo(TransitionHolder other) {
+            return Integer.compare(weight, other.weight);
         }
 
         @Override

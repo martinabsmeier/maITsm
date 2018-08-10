@@ -21,6 +21,10 @@ import de.ma.it.common.sm.StateMachine;
 import de.ma.it.common.sm.StateMachineFactory;
 import de.ma.it.common.sm.StateMachineProxyBuilder;
 import de.ma.it.common.sm.annotation.Transition;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * TODO Insert description
@@ -29,18 +33,29 @@ import de.ma.it.common.sm.annotation.Transition;
  */
 public class TapeDeckTest {
 
-    public static void main(String[] args) {        
-        TapeDeckManager manager = new TapeDeckManager();
-        StateMachineFactory factory = StateMachineFactory.getInstance(Transition.class);
-        StateMachine sm = factory.create(TapeDeckManager.STATE_EMPTY, manager);
-        TapeDeck deck = new StateMachineProxyBuilder().create(TapeDeck.class, sm);
+    private TapeDeck deck;
 
+    @Before
+    public void setUp() {
+        StateMachineFactory factory = StateMachineFactory.getInstance(Transition.class);
+        StateMachine sm = factory.create(TapeDeckManager.STATE_EMPTY, new TapeDeckManager());
+        deck = new StateMachineProxyBuilder().create(TapeDeck.class, sm);
+    }
+
+    @Test
+    public void testInit() {
+        assertNotNull(deck);
+    }
+
+    @Test
+    public void testTapeDeck() {
         deck.load("The Knife - Silent Shout");
         deck.play();
         deck.pause();
         deck.play();
         deck.stop();
         deck.eject();
+
     }
 
 }

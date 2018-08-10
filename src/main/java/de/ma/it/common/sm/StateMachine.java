@@ -78,7 +78,7 @@ public final class StateMachine {
      * @param startStateId the id of the start {@link State}.
      */
     public StateMachine(State[] states, String startStateId) {
-        this.states = new HashMap<String, State>();
+        this.states = new HashMap<>();
         for (State s : states) {
             this.states.put(s.getId(), s);
         }

@@ -1,5 +1,4 @@
 /*
- * TODO Insert description here!
  * Copyright (C) 2014 Martin Absmeier, IT Consulting Services
  *
  * This program is free software: you can redistribute it and/or modify

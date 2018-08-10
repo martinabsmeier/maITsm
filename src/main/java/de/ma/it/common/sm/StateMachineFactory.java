@@ -129,8 +129,8 @@ public class StateMachineFactory {
      */
     public StateMachine create(String start, Object handler, Object... handlers) {
 
-        Map<String, State> states = new HashMap<String, State>();
-        List<Object> handlersList = new ArrayList<Object>(1 + handlers.length);
+        Map<String, State> states = new HashMap<>();
+        List<Object> handlersList = new ArrayList<>(1 + handlers.length);
         handlersList.add(handler);
         handlersList.addAll(Arrays.asList(handlers));
 
@@ -202,7 +202,7 @@ public class StateMachineFactory {
         for (Method m : methods) {
             setupSelfTransitions(m, onEntrySelfTransitionAnnotation, onExitSelfTransitionAnnotation, states, handler);
 
-            List<TransitionWrapper> transitionAnnotations = new ArrayList<TransitionWrapper>();
+            List<TransitionWrapper> transitionAnnotations = new ArrayList<>();
             if (m.isAnnotationPresent(transitionAnnotation)) {
                 transitionAnnotations.add(new TransitionWrapper(transitionAnnotation, m.getAnnotation(transitionAnnotation)));
             }
@@ -256,7 +256,7 @@ public class StateMachineFactory {
     }
 
     public static List<Field> getFields(Class<?> clazz) {
-        LinkedList<Field> fields = new LinkedList<Field>();
+        LinkedList<Field> fields = new LinkedList<>();
 
         for (Field f : clazz.getDeclaredFields()) {
             if (!f.isAnnotationPresent(de.ma.it.common.sm.annotation.State.class)) {
@@ -279,7 +279,7 @@ public class StateMachineFactory {
     }
 
     public static State[] createStates(List<Field> fields) {
-        LinkedHashMap<String, State> states = new LinkedHashMap<String, State>();
+        LinkedHashMap<String, State> states = new LinkedHashMap<>();
 
         while (!fields.isEmpty()) {
             int size = fields.size();

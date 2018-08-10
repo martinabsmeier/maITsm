@@ -213,7 +213,7 @@ public class StateMachineProxyBuilder {
 		}
 
         @Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(Object proxy, Method method, Object[] args) {
 			if ("hashCode".equals(method.getName()) && args == null) {
 				return System.identityHashCode(proxy);
 			}
